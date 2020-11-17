@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<!-- saved from url=(0012)about:srcdoc -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js" crossorigin=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.sound.min.js" crossorigin=""></script>
+<script src="https://assets.editor.p5js.org/5f576995a94a8400248c1256/e1ee14c2-7d08-4870-823a-ab9d502dd783.js" crossorigin=""></script>
+    
+    
+
+  <!--<base href="https://editor.p5js.org/DevanshAgarwal/sketches/_yFMOuKpm/">--><base href="."><style>
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+</style><script src="https://editor.p5js.org/previewScripts.js"></script><style data-emotion=""></style><script>
+    function getScriptOff(line) {
+      var offs = [[72,"sketch"]];
+      var l = 0;
+      var file = '';
+      for (var i=0; i<offs.length; i++) {
+        var n = offs[i][0];
+        if (n < line && n > l) {
+          l = n;
+          file = offs[i][1];
+        }
+      }
+      return [line - l, file];
+    }
+    // catch reference errors, via http://stackoverflow.com/a/12747364/2994108
+    window.onerror = function (msg, url, lineNumber, columnNo, error) {
+        var string = msg.toLowerCase();
+        var substring = "script error";
+        var data = {};
+        if (url.match(/^(http:\/\/|https:\/\/)/) !== null && error.stack){
+          var errorNum = error.stack.split('about:srcdoc:')[1].split(':')[0];
+          var fileInfo = getScriptOff(errorNum);
+          data = msg + ' (' + fileInfo[1] + ': line ' + fileInfo[0] + ')';
+        } else {
+          var fileInfo = getScriptOff(lineNumber);
+          data = msg + ' (' + fileInfo[1] + ': line ' + fileInfo[0] + ')';
+        }
+        window.parent.postMessage([{
+          log: [{
+            method: 'error',
+            data: [data],
+            id: Date.now().toString()
+          }],
+          source: fileInfo[1]
+        }], '*');
+      return false;
+    };
+    // catch rejected promises
+    window.onunhandledrejection = function (event) {
+      if (event.reason && event.reason.message && event.reason.stack){
+        var errorNum = event.reason.stack.split('about:srcdoc:')[1].split(':')[0];
+        var fileInfo = getScriptOff(errorNum);
+        var data = event.reason.message + ' (' + fileInfo[1] + ': line ' + fileInfo[0] + ')';
+        window.parent.postMessage([{
+          log: [{
+            method: 'error',
+            data: [data],
+            id: Date.now().toString()
+          }],
+          source: fileInfo[1]
+        }], '*');
+      }
+    };
+  </script></head>
+  <body>
+      <script data-tag="@fs-sketch.js">var monkey, scene, invisibleGround , bananaGroup, score
+
+var monkeyImage, bananaImage, jungleImage, stoneImage
+
+function preload(){
+  monkeyImage =loadAnimation ("https://assets.editor.p5js.org/5f576995a94a8400248c1256/dfd1c5ef-5022-4980-9f7f-b551deac44fa.png","https://assets.editor.p5js.org/5f576995a94a8400248c1256/0d5690a4-af7e-45ec-a9bc-a76902822342.png",
+  "https://assets.editor.p5js.org/5f576995a94a8400248c1256/37915613-acf1-4941-a6cd-470cdc040f4e.png","https://assets.editor.p5js.org/5f576995a94a8400248c1256/07c1c291-8c0f-4e36-9cb8-a4bcf8aee748.png","https://assets.editor.p5js.org/5f576995a94a8400248c1256/bd084228-c58d-4ea6-844c-71ef4a673ff7.png","https://assets.editor.p5js.org/5f576995a94a8400248c1256/c5505b74-b458-4078-88de-3a408a16a5cf.png",
+ "https://assets.editor.p5js.org/5f576995a94a8400248c1256/51d8153f-b306-49d1-a96a-d9bec5c305c8.png","https://assets.editor.p5js.org/5f576995a94a8400248c1256/126d74a7-565a-4685-8a04-878bc3dd7afd.png","https://assets.editor.p5js.org/5f576995a94a8400248c1256/4f676330-0174-4618-b52e-a3a78c543675.png","https://assets.editor.p5js.org/5f576995a94a8400248c1256/40e1f530-50ae-4f9e-b3df-034f545cccd9.png");
+  
+  bananaImage=loadImage("https://assets.editor.p5js.org/5f576995a94a8400248c1256/a27e7165-3033-4301-a878-3a8591fdf74c.png");
+
+  jungleImage=loadImage("https://assets.editor.p5js.org/5f576995a94a8400248c1256/b1b956da-5979-47ed-ae4c-4fdd96291859.jpg");
+  
+  stoneImage=loadImage("https://assets.editor.p5js.org/5f576995a94a8400248c1256/9570e0db-e4e5-483b-ad0b-f7d860a67405.png");
+}
+
+function setup() {
+  
+  createCanvas(500, 400);
+  
+  scene=createSprite(90, 200);
+  scene.addImage(jungleImage);
+  scene.velocityX=-5;
+  scene.x=scene.width/2;
+  
+  invisibleGround=createSprite(250, 380, 500, 20 )
+  invisibleGround.visible=false
+  
+  monkey=createSprite(100, 340);
+  monkey.addAnimation("monkey",monkeyImage);
+  monkey.scale=0.15;
+
+  bananaGroup=createGroup();
+  
+  score=0
+}
+
+function draw() {
+  
+ background("jungleImage"); 
+  
+  if(scene.x<0){
+    scene.x=scene.width/2;
+  }
+  
+  monkey.collide(invisibleGround);
+  
+  if(keyDown(UP_ARROW)&&monkey.y>260) {
+    monkey.velocityY=-12;
+  }
+  monkey.velocityY=monkey.velocityY+0.8;
+  
+
+  if(frameCount%60===0){
+    spawnBananas();
+  }
+  
+  if(bananaGroup.isTouching(monkey)){
+    bananaGroup.destroyEach();
+    score=score+2
+  }
+  
+  drawSprites();
+  
+  fill("blue");
+  textSize(30);
+  text("SCORE: "+ score, 200, 50)
+
+}  
+
+function spawnBananas(){
+  
+  banana=createSprite(550, 200)
+  banana.addImage(bananaImage);
+  banana.scale=0.055;
+  banana.velocityX=-9;
+  banana.y=random(200, 250);
+  bananaGroup.add(banana);
+  
+}
+
+
+
+
+
+
+
+
+</script>
+  
+
+<canvas id="defaultCanvas0" class="p5Canvas" width="1000" height="800" style="width: 500px; height: 400px;"></canvas></body></html>
